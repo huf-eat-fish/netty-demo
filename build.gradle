@@ -1,0 +1,39 @@
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    group 'me.huf.im'
+    version '1.0-SNAPSHOT'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+subprojects {
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        mavenCentral()
+        jcenter()
+    }
+
+    ext {
+        nettyVersion = '4.1.33.Final'
+        junitVersion = '4.12'
+        logbackVersion = '1.2.3'
+        lombokVersion = '1.18.6'
+        jacksonVersion = '2.9.8'
+    }
+
+    dependencies {
+        compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: project.jacksonVersion
+        compile group: 'ch.qos.logback', name: 'logback-classic', version: project.logbackVersion
+        compile group: 'io.netty', name: 'netty-all', version: project.nettyVersion
+        compileOnly group: 'org.projectlombok', 'name': 'lombok', 'version': project.lombokVersion
+        annotationProcessor group: 'org.projectlombok', 'name': 'lombok', 'version': project.lombokVersion
+
+        testCompile group: 'junit', name: 'junit', version: project.junitVersion
+
+        if (project.name == 'im-common') return
+        compile project(':im-common')
+    }
+}
